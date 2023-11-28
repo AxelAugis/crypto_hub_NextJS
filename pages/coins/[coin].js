@@ -1,40 +1,63 @@
 import React from 'react'
-import { useRouter } from 'next/router'
+import Image from 'next/image';
 
 
 export default function coin(props) {
-
-  const router = useRouter();
-  const coin = router.query.coin;
+  const dailyChange = props.crypto.market_data.price_change_percentage_24h;
+  const weeklyChange = props.crypto.market_data.price_change_percentage_7d;
+  const monthlyChange = props.crypto.market_data.price_change_percentage_30d;
+  const yearlyChange = props.crypto.market_data.price_change_percentage_1y;
 
   return (
-    <div>
-        <h1>{coin}</h1>
-    </div>
+    <section className='w-3/5 mx-auto mt-8 flex justify-between flex-wrap'>
+      <div className='flex flex-col p-4 border-2 border-gray-200 rounded-xl w-[60%]'>
+        <div className='flex items-center justify-between mb-3'>
+          <Image src={props.crypto.image.large} width={64} height={64} alt={`Logo ${props.crypto.name}`}/>
+          <h1 className='text-3xl font-bold'>{props.crypto.name}</h1>
+          <p className='font-bold'>{props.crypto.symbol.toUpperCase()}</p> 
+        </div>
+        <div>
+          <div className='flex justify-between items-center'>
+            <h3><strong> Cours actuel <span className='text-gray-500'>:</span> </strong>{props.crypto.market_data.current_price.usd}$</h3>
+            
+          </div>
+            <p>Market cap : {props.crypto.market_data.market_cap.usd.toLocaleString("fr-FR")} Mds $</p>
+            <p>Rang par capitalisation : {props.crypto.market_data.market_cap_rank}</p>
+            <p>Volume d'échange : {props.crypto.market_data.total_volume.usd.toLocaleString("fr-FR")} Mds $</p>
+        </div>
+      </div>   
+      <div className='flex border-2 border-gray-200 rounded-xl w-[38%]'>
+        <div className='flex flex-col w-11/12 p-2 justify-around mx-auto'>
+          <h3 className='font-semibold text-center'>Variations en %</h3>
+          <p>24h : <span className={dailyChange < 0 ? 'text-red-700' : dailyChange === 0 ? 'text-gray-700' : 'text-green-600'}>{dailyChange}%</span></p>
+          <p>7j : <span className={weeklyChange < 0 ? 'text-red-700' : weeklyChange === 0 ? 'text-gray-700' : 'text-green-600'}>{weeklyChange}%</span></p>
+          <p>30j : <span className={monthlyChange < 0 ? 'text-red-700' : monthlyChange === 0 ? 'text-gray-700' : 'text-green-600'}>{monthlyChange}%</span></p>
+          <p>1a : <span className={yearlyChange < 0 ? 'text-red-700' : yearlyChange === 0 ? 'text-gray-700' : 'text-green-600'}>{yearlyChange}%</span></p>
+        </div>
+      </div>
+    </section>
   )
 }
 
 
-export async function getStaticProps(){
+export async function getStaticProps(context){
 
-  const slug = context.params.coin;
-  const data = await fetch(`https://api.coingecko.com/api/v3/coins/${slug}`);
-  console.log(data);
-  // const currentCoin = data.find(item => item.id === slug);
-  // console.log(currentCoin);
+  const id = context.params.coin;
+  const data = await fetch(`https://api.coingecko.com/api/v3/coins/${id}`);
+
+  const crypto = await data.json();
   return {
     props: {
-      results 
+      crypto
     }
   }
 }
 
 export async function getStaticPaths() {
   const datas = await fetch('https://api.coingecko.com/api/v3/coins/list');
-  const results = await datas.json();
-  console.log(results);
-  const paths = results.map(item => ({
-    params: { coin: item.id }
+  const cryptos =  await datas.json();
+  const paths = cryptos.map(item => ({
+      params: {coin: item.id.toString()}
   }))
 
   return {
