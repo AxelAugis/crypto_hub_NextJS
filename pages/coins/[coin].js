@@ -1,12 +1,20 @@
 import React from 'react'
 import Image from 'next/image';
+import Link from 'next/link';
 
 
 export default function coin(props) {
+
+  // Percentages
   const dailyChange = props.crypto.market_data.price_change_percentage_24h;
   const weeklyChange = props.crypto.market_data.price_change_percentage_7d;
   const monthlyChange = props.crypto.market_data.price_change_percentage_30d;
   const yearlyChange = props.crypto.market_data.price_change_percentage_1y;
+
+  // In MC or $
+
+  const dailyMCChange = props.crypto.market_data.market_cap_change_24h;
+  const dailyMCPercentage = props.crypto.market_data.market_cap_change_percentage_24h;
 
   return (
     <section className='w-3/5 mx-auto mt-8 flex justify-between flex-wrap'>
@@ -34,6 +42,36 @@ export default function coin(props) {
           <p>30j : <span className={monthlyChange < 0 ? 'text-red-700' : monthlyChange === 0 ? 'text-gray-700' : 'text-green-600'}>{monthlyChange}%</span></p>
           <p>1a : <span className={yearlyChange < 0 ? 'text-red-700' : yearlyChange === 0 ? 'text-gray-700' : 'text-green-600'}>{yearlyChange}%</span></p>
         </div>
+      </div>
+      <div className='flex flex-col p-4 border-2 border-gray-200 rounded-xl w-[32%] my-4'>
+        <div className='flex flex-col w-11/12 p-2 justify-around mx-auto'>
+            <h3 className='font-semibold text-center'>Variations du MC</h3>
+            <p>24h : <span className={dailyMCChange < 0 ? 'text-red-700' : dailyMCChange === 0 ? 'text-gray-700' : 'text-green-600'}>{dailyMCChange.toLocaleString("fr-FR")}</span> Mds$</p>
+            <p>24h : <span className={dailyMCPercentage < 0 ? 'text-red-700' : dailyMCPercentage === 0 ? 'text-gray-700' : 'text-green-600'}>{dailyMCPercentage}%</span></p>
+        </div>
+      </div>
+      <div className='flex flex-col p-4 border-2 border-gray-200 rounded-xl w-[32%] my-4'>
+        <div className='flex flex-col w-11/12 p-2 justify-around mx-auto'>
+            <h3 className='font-semibold text-center'>Variations du MC</h3>
+            <p>24h : <span className={dailyMCChange < 0 ? 'text-red-700' : dailyMCChange === 0 ? 'text-gray-700' : 'text-green-600'}>{dailyMCChange.toLocaleString("fr-FR")}</span> Mds$</p>
+            <p>24h : <span className={dailyMCPercentage < 0 ? 'text-red-700' : dailyMCPercentage === 0 ? 'text-gray-700' : 'text-green-600'}>{dailyMCPercentage}%</span></p>
+        </div>
+      </div>
+      <div className='flex flex-col p-4 border-2 border-gray-200 rounded-xl w-[32%] my-4'>
+        <div className='flex flex-col w-11/12 p-2 justify-around mx-auto'>
+            <h3 className='font-semibold text-center'>Variations du MC</h3>
+            <p>24h : <span className={dailyMCChange < 0 ? 'text-red-700' : dailyMCChange === 0 ? 'text-gray-700' : 'text-green-600'}>{dailyMCChange.toLocaleString("fr-FR")}</span> Mds$</p>
+            <p>24h : <span className={dailyMCPercentage < 0 ? 'text-red-700' : dailyMCPercentage === 0 ? 'text-gray-700' : 'text-green-600'}>{dailyMCPercentage}%</span></p>
+        </div>
+      </div>
+      <div className='flex flex-col p-4 border-2 border-gray-200 rounded-xl w-4/12 '>
+          <h3 className='font-semibold text-center'>Socials</h3>
+          <p>Website : <Link href={`${props.crypto.links.homepage[0]}`}>Bitcoin</Link></p>
+          <p>Subreddit : <Link href={`${props.crypto.links.subreddit_url}`}>Reddit</Link></p>
+          <p>{props.crypto.links.homepage[0]}</p>
+      </div>
+      <div className='flex flex-col p-4 border-2 border-gray-200 rounded-xl w-7/12 '>
+                
       </div>
     </section>
   )
