@@ -9,15 +9,9 @@ export default function Navbar() {
         <ul>
             <li>
                 <Link href="/">
-                    <Image src="/images/logo.png" width={56} height={56} alt='Logo du site'/>
+                    <Image src="/images/logo.png" width={92} height={92} alt='Logo du site'/>
                 </Link>
             </li>
-        </ul>
-        <ul className=''>
-            <li><Link href="/">All</Link></li>
-            <li><Link href="/">Contact</Link></li>
-            <li><Link href="/">Home</Link></li>
-
         </ul>
     </nav>
   )
